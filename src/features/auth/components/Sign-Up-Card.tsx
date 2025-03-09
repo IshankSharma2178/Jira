@@ -21,8 +21,10 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signUpSchema } from "@/validation/auth/sign-up-validation";
 import { useForm } from "react-hook-form";
+import { useRegister } from "../api/use-register";
 
 export const SignUpCard = () => {
+  const { mutate } = useRegister();
   const form = useForm<Zod.infer<typeof signUpSchema>>({
     resolver: zodResolver(signUpSchema),
     defaultValues: {
@@ -33,7 +35,7 @@ export const SignUpCard = () => {
   });
 
   const onSubmit = (values: Zod.infer<typeof signUpSchema>) => {
-    console.log(values);
+    mutate({ json: values });
   };
   return (
     <Card className="w-full h-full md:w-[487px] border-none shadow-none">

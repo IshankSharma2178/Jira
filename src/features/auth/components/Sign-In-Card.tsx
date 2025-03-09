@@ -15,8 +15,11 @@ import {
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { signInSchema } from "@/validation/auth/sign-in-validation";
+import { useLogin } from "../api/use-login";
 
 export const SignInCard = () => {
+  const { mutate } = useLogin();
+
   const form = useForm<Zod.infer<typeof signInSchema>>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
@@ -26,7 +29,7 @@ export const SignInCard = () => {
   });
 
   const onSubmit = (values: Zod.infer<typeof signInSchema>) => {
-    console.log(values);
+    mutate({ json: values });
   };
 
   return (
