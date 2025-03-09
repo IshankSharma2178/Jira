@@ -8,7 +8,7 @@ export const useCurrent = () => {
     queryFn: async () => {
       const response = await client.api.auth.current.$get();
       if (!response.ok) {
-        throw new Error("Unauthorized");
+        return null;
       }
       const data = await response.json();
       return data;

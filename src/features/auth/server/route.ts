@@ -3,7 +3,7 @@ import { createAdminClient } from "@/lib/appwrite";
 import { signInSchema } from "@/validation/auth/sign-in-validation";
 import { signUpSchema } from "@/validation/auth/sign-up-validation";
 import { zValidator } from "@/features/middleware/validation.middleware";
-import { Account, ID } from "node-appwrite";
+import { ID } from "node-appwrite";
 import { setCookie, deleteCookie } from "hono/cookie";
 import { AUTH_COOKIE } from "../constant";
 import { sessionMiddleware } from "@/features/middleware/session.middleware";
