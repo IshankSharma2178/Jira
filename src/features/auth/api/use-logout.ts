@@ -3,6 +3,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { InferRequestType, InferResponseType } from "hono";
 
 import { client } from "@/lib/rpc";
+import { redirect } from "next/navigation";
 
 type ResponseType = InferResponseType<(typeof client.api.auth.logout)["$post"]>;
 
@@ -16,6 +17,7 @@ export const useLogout = () => {
     },
     onSuccess: () => {
       queryclient.invalidateQueries({ queryKey: ["current"] });
+      redirect("/sign-in");
     },
   });
   return mutation;
