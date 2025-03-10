@@ -11,6 +11,7 @@ import { sessionMiddleware } from "@/features/middleware/session.middleware";
 const app = new Hono()
   .get("/current", sessionMiddleware, (c) => {
     const user = c.get("user");
+
     return c.json(user);
   })
   .post("/login", zValidator("json", signInSchema), async (c) => {

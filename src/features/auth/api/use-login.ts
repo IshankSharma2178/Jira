@@ -13,6 +13,9 @@ export const useLogin = () => {
       const response = await client.api.auth.login["$post"]({ json });
       return await response.json();
     },
+    onSuccess: () => {
+      window.location.reload();
+    },
   });
   return mutation;
 };
