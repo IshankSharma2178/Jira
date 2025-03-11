@@ -21,7 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpSchema } from "@/validation/auth/sign-up-validation";
+import { signUpSchema } from "@/validation/auth-schema/sign-up-validation";
 import { useForm } from "react-hook-form";
 import { useRegister } from "../api/use-register";
 

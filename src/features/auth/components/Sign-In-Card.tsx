@@ -16,7 +16,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signInSchema } from "@/validation/auth/sign-in-validation";
+import { signInSchema } from "@/validation/auth-schema/sign-in-validation";
 import { useLogin } from "../api/use-login";
 
 export const SignInCard = () => {
