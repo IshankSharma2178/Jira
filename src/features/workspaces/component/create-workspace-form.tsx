@@ -16,29 +16,49 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useCreateWorkspace } from "../api/use-create-workspace";
+import { useRef, useState } from "react";
+import Image from "next/image";
+import { Avatar, AvatarFallback } from "@/components/ui/avatar";
+import { ImageIcon } from "lucide-react";
 
 interface Props {
   onCancel?: () => void;
 }
+
 const CreateWorkspaceForm = ({ onCancel }: Props) => {
   const { mutate, isPending } = useCreateWorkspace();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [preview, setPreview] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof workSpaceSchema>>({
     resolver: zodResolver(workSpaceSchema),
-    defaultValues: {
-      name: "",
-    },
+    defaultValues: { name: "", image: undefined },
   });
 
   const onSubmit = (values: z.infer<typeof workSpaceSchema>) => {
+    const finalValues = {
+      ...values,
+      image: values.image instanceof File ? values.image : "",
+    };
     mutate(
-      { json: values },
+      { form: finalValues },
       {
         onSuccess: () => {
           form.reset();
+          setPreview(null);
         },
       }
     );
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      form.setValue("image", file);
+      const objectUrl = URL.createObjectURL(file);
+      setPreview(objectUrl);
+      return () => URL.revokeObjectURL(objectUrl);
+    }
   };
 
   return (
@@ -69,6 +89,58 @@ const CreateWorkspaceForm = ({ onCancel }: Props) => {
                 )}
               />
             </div>
+
+            <FormField
+              control={form.control}
+              name="image"
+              render={() => (
+                <FormItem>
+                  <FormLabel>Workspace Icon</FormLabel>
+                  <div className="flex items-center gap-x-5">
+                    {preview ? (
+                      <div className="size-[72px] relative rounded-sm overflow-hidden">
+                        <Image
+                          className="object-cover"
+                          fill
+                          src={preview}
+                          alt="Workspace Image"
+                        />
+                      </div>
+                    ) : (
+                      <Avatar className="size-[72px]">
+                        <AvatarFallback>
+                          <ImageIcon className="size-[36px] text-neutral-400" />
+                        </AvatarFallback>
+                      </Avatar>
+                    )}
+                    <div className="flex flex-col">
+                      <p className="text-sm text-muted-foreground">
+                        JPG, PNG, SVG, or JPEG (Max: 1MB)
+                      </p>
+                      <Input
+                        type="file"
+                        accept=".jpg,.png,.jpeg,.svg"
+                        className="hidden"
+                        ref={inputRef}
+                        onChange={handleImageChange}
+                        disabled={isPending}
+                      />
+                      <Button
+                        type="button"
+                        disabled={isPending}
+                        variant="teritary"
+                        size="xs"
+                        className="w-fit mt-2"
+                        onClick={() => inputRef.current?.click()}
+                      >
+                        Upload Image
+                      </Button>
+                    </div>
+                  </div>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
 
             <div className="flex items-center justify-between mt-7">
               <Button
