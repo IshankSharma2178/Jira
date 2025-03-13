@@ -11,8 +11,10 @@ import {
   SelectValue,
 } from "./ui/select";
 import WorkspaceAvatar from "@/features/workspaces/component/workspace-avatar";
+import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 
 const WorkspaceSwitcher = () => {
+  const workspaceId = useWorkspaceId();
   const router = useRouter();
   const { data: workspaces } = useGetWorkspaces();
 
@@ -25,7 +27,7 @@ const WorkspaceSwitcher = () => {
         <p className="text-xs uppercase text-neutral-500">Workspace</p>
         <FaPlusCircle className="size-5 text-neutral-500 cursor-pointer hover:opacity-75" />
       </div>
-      <Select onValueChange={onSelect}>
+      <Select onValueChange={onSelect} value={workspaceId}>
         <SelectTrigger className="w-full bg-neutral-200 font-medium p-1">
           <SelectValue placeholder="Select a workspace" />
         </SelectTrigger>
