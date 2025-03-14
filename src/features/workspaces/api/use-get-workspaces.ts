@@ -9,7 +9,7 @@ export const useGetWorkspaces = () => {
       const res = await client.api.workspaces.$get();
 
       if (!res.ok) {
-        throw new Error("Failed to get workspaces");
+        return null;
       }
 
       const { data } = await res.json();
