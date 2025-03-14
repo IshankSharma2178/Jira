@@ -1,9 +1,9 @@
-import { protect } from "@/features/auth/actions";
+import { getUser } from "@/features/auth/api/get-user";
 import { getWorkspaces } from "@/features/workspaces/action";
 import { redirect } from "next/navigation";
 
 export default async function Home() {
-  const user = await protect();
+  const user = await getUser();
   if (!user) redirect("/sign-in");
 
   const workspaces = await getWorkspaces();
