@@ -27,6 +27,8 @@ import { Input } from "@/components/ui/input";
 import { updateWorkSpaceSchema } from "@/validation/workspace-schema/workspace-validation";
 import { Workspace } from "../type";
 import { useUpdateWorkspace } from "../api/use-update-workspace";
+import { useConfirm } from "@/hooks/use-confirm";
+import { useDeleteWorkspace } from "../api/use-delete-workspace";
 
 interface EditWorkspaceFormProps {
   onCancel?: () => void;
@@ -39,8 +41,31 @@ export const EditWorkspaceForm = ({
 }: EditWorkspaceFormProps) => {
   const router = useRouter();
   const { mutate, isPending } = useUpdateWorkspace();
+  const { mutate: deleteWorkspace, isPending: isDeletingWorkspace } =
+    useDeleteWorkspace();
 
   const inputRef = useRef<HTMLInputElement>(null);
+
+  const [DeleteDialog, confirmDelete] = useConfirm(
+    "Delete Workspace",
+    "This action cannot be undone.",
+    "destructive"
+  );
+
+  const handleDelete = async () => {
+    const ok = await confirmDelete();
+
+    if (!ok) return;
+
+    deleteWorkspace(
+      { param: { workspaceId: initialValues.$id } },
+      {
+        onSuccess: () => {
+          window.location.href = "/";
+        },
+      }
+    );
+  };
 
   const form = useForm<z.infer<typeof updateWorkSpaceSchema>>({
     resolver: zodResolver(updateWorkSpaceSchema),
@@ -77,7 +102,7 @@ export const EditWorkspaceForm = ({
 
   return (
     <div className="flex flex-col gap-y-4">
-      {/* <DeleteDialog /> */}
+      <DeleteDialog />
       {/* <ResetDialog /> */}
       <Card className="w-full h-full border-none shadow-none">
         <CardHeader className="flex flex-row items-center gap-x-4 p-7 space-y-0">
@@ -257,8 +282,8 @@ export const EditWorkspaceForm = ({
               size="sm"
               variant="destructive"
               type="button"
-              // disabled={isPending || isDeletingWorkspace}
-              // onClick={handleDelete}
+              disabled={isPending || isDeletingWorkspace}
+              onClick={handleDelete}
             >
               Delete Workspace
             </Button>
