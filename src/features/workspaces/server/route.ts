@@ -98,6 +98,7 @@ const app = new Hono()
 
       const { workspaceId } = c.req.param();
       const { name, image } = c.req.valid("form");
+      console.log(image);
       const memeber = await getMember({
         databases,
         workspaceId,
@@ -132,7 +133,7 @@ const app = new Hono()
         DATABASE_ID,
         WORKSPACES_ID,
         workspaceId,
-        { name, imageUrl: uploadImageUploadUrl }
+        { name, imageUrl: uploadImageUploadUrl ? uploadImageUploadUrl : "" }
       );
 
       return c.json({ data: workspace });

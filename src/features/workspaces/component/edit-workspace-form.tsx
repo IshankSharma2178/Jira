@@ -51,6 +51,7 @@ export const EditWorkspaceForm = ({
   });
 
   const onSubmit = (values: z.infer<typeof updateWorkSpaceSchema>) => {
+    console.log(values);
     const finalValues = {
       ...values,
       image: values.image instanceof File ? values.image : "",
@@ -163,7 +164,7 @@ export const EditWorkspaceForm = ({
                               size="xs"
                               className="w-fit mt-2"
                               onClick={() => {
-                                field.onChange(null);
+                                field.onChange("");
                                 if (inputRef.current) {
                                   inputRef.current.value = "";
                                 }
