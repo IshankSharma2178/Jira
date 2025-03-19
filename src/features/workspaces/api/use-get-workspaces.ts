@@ -7,7 +7,6 @@ export const useGetWorkspaces = () => {
     queryKey: ["workspaces"],
     queryFn: async () => {
       const res = await client.api.workspaces.$get();
-      console.log(res);
 
       if (!res.ok) {
         return null;

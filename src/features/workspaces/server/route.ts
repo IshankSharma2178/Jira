@@ -100,7 +100,7 @@ const app = new Hono()
 
       const { workspaceId } = c.req.param();
       const { name, image } = c.req.valid("form");
-      console.log(image);
+
       const memeber = await getMember({
         databases,
         workspaceId,
