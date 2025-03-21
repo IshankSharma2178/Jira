@@ -9,6 +9,7 @@ import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { cn } from "@/lib/utils";
 import { useCreateProjectModal } from "@/features/projects/hooks/use-create-project-modal";
 import { ProjectAvatar } from "@/features/projects/components/project-avtar";
+import { CreateProjectModal } from "@/features/projects/components/create-project-modal";
 
 export const Projects = () => {
   const pathname = usePathname();
@@ -18,6 +19,7 @@ export const Projects = () => {
 
   return (
     <div className="flex flex-col gap-y-2">
+      <CreateProjectModal />
       <div className="flex items-center justify-between">
         <p className="text-xs uppercase text-neutral-500">Projects</p>
         <RiAddCircleFill

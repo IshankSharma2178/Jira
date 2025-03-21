@@ -100,7 +100,6 @@ export const EditWorkspaceForm = ({
   });
 
   const onSubmit = (values: z.infer<typeof updateWorkSpaceSchema>) => {
-    console.log(values);
     const finalValues = {
       ...values,
       image: values.image instanceof File ? values.image : "",
