@@ -6,6 +6,7 @@ export const updateProjectSchema = z.object({
     .union([
       z.instanceof(File),
       z.string().transform((value) => (value === "" ? undefined : value)),
+      z.null(),
     ])
     .optional(),
 });

@@ -75,6 +75,7 @@ export const EditProjectForm = ({
   };
 
   const onSubmit = (values: z.infer<typeof updateProjectSchema>) => {
+    console.log("first update project schema");
     const finalValues = {
       ...values,
       image: values.image instanceof File ? values.image : "",
