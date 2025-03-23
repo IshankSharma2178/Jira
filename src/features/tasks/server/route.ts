@@ -17,23 +17,19 @@ const app = new Hono()
     async (c) => {
       const user = c.get("user");
       const databases = c.get("databases");
-      const {
-        name,
-        status,
-        workspaceId,
-        projectId,
-        dueDate,
-        assigneeId,
-        description,
-      } = c.req.valid("json");
+      const { name, status, workspaceId, projectId, dueDate, assigneeId } =
+        c.req.valid("json");
+
       const member = await getMember({
         databases,
         workspaceId,
         userId: user.$id,
       });
+
       if (!member) {
         return c.json({ error: "Unauthorized" }, 401);
       }
+
       const highestPositionTask = await databases.listDocuments(
         DATABASE_ID,
         TASK_ID,
@@ -44,6 +40,7 @@ const app = new Hono()
           Query.limit(1),
         ]
       );
+
       const newPositon =
         highestPositionTask.documents.length > 0
           ? highestPositionTask.documents[0].position + 1000
@@ -60,10 +57,10 @@ const app = new Hono()
           projectId,
           dueDate,
           assigneeId,
-          description,
           position: newPositon,
         }
       );
+
       return c.json({ data: task });
     }
   )
@@ -90,26 +87,21 @@ const app = new Hono()
         Query.orderAsc("$createdAt"),
       ];
       if (projectId) {
-        console.log("projectId", projectId);
         query.push(Query.equal("projectId", projectId));
       }
       if (status) {
-        console.log("status", status);
         query.push(Query.equal("status", status));
       }
 
       if (assigneeId) {
-        console.log("assigneeId", assigneeId);
         query.push(Query.equal("assigneeId", assigneeId));
       }
 
       if (dueDate) {
-        console.log("dueDate", dueDate);
         query.push(Query.equal("dueDate", dueDate));
       }
 
       if (search) {
-        console.log("search", search);
         query.push(Query.search("name", search));
       }
       const tasks = await databases.listDocuments(DATABASE_ID, TASK_ID, query);

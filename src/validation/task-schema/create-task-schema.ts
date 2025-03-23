@@ -1,4 +1,4 @@
-import { TaskStatus } from "@/features/tasks/components/types";
+import { TaskStatus } from "@/features/tasks/types";
 import { z } from "zod";
 
 export const createTaskSchema = z.object({
