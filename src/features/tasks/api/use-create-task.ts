@@ -21,14 +21,17 @@ export const useCreateTask = () => {
 
       return await response.json();
     },
+    onMutate: () => {
+      toast.loading("Loading", { id: "use-createTask" });
+    },
     onSuccess: () => {
-      toast.success("Task created.");
+      toast.success("Task created.", { id: "use-createTask" });
       queryClient.invalidateQueries({ queryKey: ["project-analytics"] });
       queryClient.invalidateQueries({ queryKey: ["workspace-analytics"] });
       queryClient.invalidateQueries({ queryKey: ["tasks"] });
     },
     onError: () => {
-      toast.error("Failed to create task.");
+      toast.error("Failed to create task.", { id: "use-createTask" });
     },
   });
 

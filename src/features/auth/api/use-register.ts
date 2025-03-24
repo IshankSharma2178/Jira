@@ -19,13 +19,16 @@ export const useRegister = () => {
       const response = await client.api.auth.register["$post"]({ json });
       return await response.json();
     },
+    onMutate: () => {
+      toast.loading("Loading", { id: "use-register" });
+    },
     onSuccess: () => {
-      toast.success("Register successful");
+      toast.success("Register successful", { id: "use-register" });
       router.refresh();
       queryClient.invalidateQueries({ queryKey: ["current"] });
     },
     onError: () => {
-      toast.error("Failed to register");
+      toast.error("Failed to register", { id: "use-register" });
     },
   });
   return mutation;

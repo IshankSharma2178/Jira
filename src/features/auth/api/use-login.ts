@@ -1,7 +1,5 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
 import { InferRequestType, InferResponseType } from "hono";
-
 import { client } from "@/lib/rpc";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
@@ -17,14 +15,18 @@ export const useLogin = () => {
       const response = await client.api.auth.login["$post"]({ json });
       return await response.json();
     },
+    onMutate: () => {
+      toast.loading("Logging in...", { id: "login-loading" });
+    },
     onSuccess: () => {
-      toast.success("Login successful");
+      toast.success("Login successful", { id: "login-loading" });
       router.refresh();
       queryClient.invalidateQueries({ queryKey: ["current"] });
     },
     onError: () => {
-      toast.error("Failed to login");
+      toast.error("Failed to login", { id: "login-loading" });
     },
   });
+
   return mutation;
 };

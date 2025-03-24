@@ -8,6 +8,7 @@ import { createTaskSchema } from "@/validation/task-schema/create-task-schema";
 import { getTaskSchema } from "@/validation/task-schema/get-task-schema";
 import { Hono } from "hono";
 import { ID, Query } from "node-appwrite";
+import { Task } from "../types";
 
 const app = new Hono()
   .post(
@@ -104,7 +105,11 @@ const app = new Hono()
       if (search) {
         query.push(Query.search("name", search));
       }
-      const tasks = await databases.listDocuments(DATABASE_ID, TASK_ID, query);
+      const tasks = await databases.listDocuments<Task>(
+        DATABASE_ID,
+        TASK_ID,
+        query
+      );
       const projectIds = tasks.documents.map((task) => task.projectId);
       const assigneeIds = tasks.documents.map((task) => task.assigneeId);
       const projects = await databases.listDocuments<Project>(

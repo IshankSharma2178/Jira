@@ -28,12 +28,15 @@ export const useDeleteMember = () => {
 
       return await response.json();
     },
+    onMutate: () => {
+      toast.loading("Loading", { id: "use-Delete" });
+    },
     onSuccess: () => {
-      toast.success("Member deleted.");
+      toast.success("Member deleted.", { id: "use-Delete" });
       queryClient.invalidateQueries({ queryKey: ["members"] });
     },
     onError: () => {
-      toast.error("Failed to delete member.");
+      toast.error("Failed to delete member.", { id: "use-Delete" });
     },
   });
 

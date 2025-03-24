@@ -16,14 +16,17 @@ export const useLogout = () => {
       const response = await client.api.auth.logout["$post"]();
       return await response.json();
     },
+    onMutate: () => {
+      toast.loading("Laoding", { id: "use-logout" });
+    },
     onSuccess: () => {
-      toast.success("Logout successful");
+      toast.success("Logout successful", { id: "use-logout" });
       router.refresh();
       queryClient.invalidateQueries({ queryKey: ["current"] });
       queryClient.invalidateQueries({ queryKey: ["workspaces"] });
     },
     onError: () => {
-      toast.error("Failed to logout");
+      toast.error("Failed to logout", { id: "use-logout" });
     },
   });
   return mutation;

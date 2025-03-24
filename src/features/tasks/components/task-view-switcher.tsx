@@ -8,6 +8,8 @@ import { useGetTasks } from "../api/use-get-tasks";
 import { useWorkspaceId } from "@/features/workspaces/hooks/use-workspace-id";
 import { useQueryState } from "nuqs";
 import { DataFilters } from "./data-filters";
+import { DataTable } from "./data-table";
+import { columns } from "./columns";
 
 export const TasKViewSwitcher = () => {
   const [view, setView] = useQueryState("task-view", { defaultValue: "table" });
@@ -50,15 +52,15 @@ export const TasKViewSwitcher = () => {
         ) : (
           <>
             <TabsContent value="table" className="mt-0">
-              {JSON.stringify(tasks)}
+              <DataTable columns={columns} data={tasks?.documents ?? []} />
               Data Table
             </TabsContent>
             <TabsContent value="kanban" className="mt-0">
-              {JSON.stringify(tasks)}
+              {/* <DataTable/> */}
               Data Kanban
             </TabsContent>
             <TabsContent value="calender" className="mt-0">
-              {JSON.stringify(tasks)}
+              {/* <DataTable/> */}
               Calender
             </TabsContent>
           </>

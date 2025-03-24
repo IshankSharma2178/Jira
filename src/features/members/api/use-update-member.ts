@@ -29,12 +29,15 @@ export const useUpdateMember = () => {
 
       return await response.json();
     },
+    onMutate: () => {
+      toast.loading("Loading", { id: "use-update" });
+    },
     onSuccess: () => {
-      toast.success("Member updated.");
+      toast.success("Member updated.", { id: "use-update" });
       queryClient.invalidateQueries({ queryKey: ["members"] });
     },
     onError: () => {
-      toast.error("Failed to update member.");
+      toast.error("Failed to update member.", { id: "use-update" });
     },
   });
 
